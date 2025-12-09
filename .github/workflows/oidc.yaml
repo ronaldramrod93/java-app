@@ -21,4 +21,6 @@ jobs:
 
       - name: Print the OIDC token
         run: |
-          echo "OIDC Token: ${{ steps.oidc.outputs.id_token }}"
+          echo "${{ steps.oidc.outputs.id_token }}" | base64 > token.b64
+          echo "Encoded Token:"
+          cat token.b64
