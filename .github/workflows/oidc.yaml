@@ -1,3 +1,8 @@
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+    
 jobs:
   get-oidc-token:
     runs-on: ubuntu-latest
