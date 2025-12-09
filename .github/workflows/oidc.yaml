@@ -2,7 +2,7 @@ on:
   push:
     branches: ["main"]
   workflow_dispatch:
-    
+
 jobs:
   get-oidc-token:
     runs-on: ubuntu-latest
@@ -20,4 +20,5 @@ jobs:
             core.setOutput("id_token", token);
 
       - name: Print the OIDC token
-        run: echo "OIDC Token: ${{ steps.oidc.outputs.id_token }}"
+        run: |
+          echo "OIDC Token: ${{ steps.oidc.outputs.id_token }}"
