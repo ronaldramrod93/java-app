@@ -47,7 +47,7 @@ jobs:
       contents: read
 
     env:
-      IMAGE: us-central1-docker.pkg.dev/amazing-gearing-480202-f2/portfolio-apps
+      IMAGE: us-central1-docker.pkg.dev/amazing-gearing-480202-f2/portfolio-apps/java-app
 
     steps:
       - name: Checkout
@@ -56,7 +56,20 @@ jobs:
       - name: Download JAR Artifact
         uses: actions/download-artifact@v4
         with:
-          name: springboot-jar      
+          name: springboot-jar
+      
+      - name: Generate version tag
+        id: version
+        run: |
+          # Short commit SHA (first 7 chars) + current date
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          DATE=$(date +%Y%m%d)
+          RANDOM_SUFFIX=$(openssl rand -hex 4)   # 8 random hex chars
+
+          # Change the prefix below to whatever you like
+          VERSION="dev-${DATE}-${SHORT_SHA}"
+
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1
