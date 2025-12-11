@@ -47,7 +47,7 @@ jobs:
       contents: read
 
     env:
-      IMAGE: us-central1-docker.pkg.dev/amazing-gearing-480202-f2/portfolio-apps/java-app
+      IMAGE: us-central1-docker.pkg.dev/amazing-gearing-480202-f2/portfolio-apps
 
     steps:
       - name: Checkout
