@@ -47,8 +47,8 @@ jobs:
       contents: read
 
     env:
-      IMAGE: us-central1-docker.pkg.dev/your-project/your-repo/your-app
-      
+      IMAGE: us-central1-docker.pkg.dev/amazing-gearing-480202-f2/portfolio-apps/java-app
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
