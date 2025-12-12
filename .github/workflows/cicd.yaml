@@ -63,12 +63,8 @@ jobs:
         run: |
           # Short commit SHA (first 7 chars) + current date
           SHORT_SHA=$(git rev-parse --short HEAD)
-          DATE=$(date +%Y%m%d)
-          RANDOM_SUFFIX=$(openssl rand -hex 4)   # 8 random hex chars
-
           # Change the prefix below to whatever you like
-          VERSION="dev-${DATE}-${SHORT_SHA}"
-
+          VERSION="dev-${SHORT_SHA}"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Authenticate to Google Cloud
@@ -82,8 +78,7 @@ jobs:
         run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
 
       - name: Build & Push Docker image
-        run: |
-          VERSION=${GITHUB_REF#refs/tags/v}
-          docker build . -t ${{ env.IMAGE }}:$VERSION -t ${{ env.IMAGE }}:latest
-          docker push ${{ env.IMAGE }}:$VERSION
+        run: |         
+          docker build . -t ${{ env.IMAGE }}:${{ steps.version.outputs.version }} -t ${{ env.IMAGE }}:latest
+          docker push ${{ env.IMAGE }}:${{ steps.version.outputs.version }}
           docker push ${{ env.IMAGE }}:latest
