@@ -57,6 +57,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: springboot-jar
+          path: target/
       
       - name: Generate version tag
         id: version
