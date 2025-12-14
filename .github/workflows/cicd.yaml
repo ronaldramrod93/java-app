@@ -62,11 +62,21 @@ jobs:
       - name: Generate version tag
         id: version
         run: |
-          # Short commit SHA (first 7 chars) + current date
           SHORT_SHA=$(git rev-parse --short HEAD)
-          # Change the prefix below to whatever you like
-          VERSION="dev-${SHORT_SHA}"
+
+          # Try to read project version via Maven (preferred)
+          if command -v mvn >/dev/null 2>&1; then
+            POM_VERSION=$(mvn -q -DforceStdout help:evaluate -Dexpression=project.version)
+          else
+            # Fallback: simple grep from pom.xml (works for common single-module poms)
+            POM_VERSION=$(grep -m1 -oP '(?<=<version>)[^<]+' pom.xml || echo "unknown")
+          fi
+
+          # Compose version including pom version and short commit sha
+          VERSION="${POM_VERSION}-${SHORT_SHA}"
+
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "pom_version=$POM_VERSION" >> $GITHUB_OUTPUT
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1
