@@ -38,7 +38,7 @@ jobs:
           path: target/*.jar
   
   cd:
-    name: Deploy to GKE
+    name: Push image and Deploy
     needs: ci
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
